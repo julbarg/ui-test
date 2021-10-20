@@ -7,7 +7,8 @@
     "build": "rm -rf dist && parcel build src/index.html --no-source-maps",
     "start": "parcel src/index.html",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet"
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet",
+    "tsc": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
