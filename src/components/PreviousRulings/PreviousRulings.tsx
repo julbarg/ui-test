@@ -38,28 +38,33 @@ const PreviousRulings: FunctionComponent = () => {
     }
   }, [isMobile])
 
+  const renderHeader = () => {
+    return (
+      <header className="previous-rulings__header">
+        <h2 className="previous-rulings__title">Previous Rulings</h2>
+        {!isMobile && (
+          <select
+            id="view"
+            value={typeView}
+            onChange={(e) => setTypeView(e.target.value)}
+            onBlur={(e) => setTypeView(e.target.value)}
+          >
+            <option key="list" value="list">
+              List
+            </option>
+            <option key="grid" value="grid">
+              Grid
+            </option>
+          </select>
+        )}
+      </header>
+    )
+  }
+
   return (
     <TypeContext.Provider value={typeView}>
       <main role="main" className="previous-rulings">
-        <header className="previous-rulings__header">
-          <h2 className="previous-rulings__title">Previous Rulings</h2>
-          {!isMobile && (
-            <select
-              id="view"
-              value={typeView}
-              onChange={(e) => setTypeView(e.target.value)}
-              onBlur={(e) => setTypeView(e.target.value)}
-            >
-              <option key="list" value="list">
-                List
-              </option>
-              <option key="grid" value="grid">
-                Grid
-              </option>
-            </select>
-          )}
-        </header>
-
+        {renderHeader()}
         <Cards polls={polls} />
       </main>
     </TypeContext.Provider>
