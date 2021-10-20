@@ -26,8 +26,8 @@ The following are the technologies which are used to implement this solution
 To run the application on local, follow these instructions
 
 ```
-npm run start
-
+npm install
+npm start
 ```
 
 Open http://localhost:1234/
