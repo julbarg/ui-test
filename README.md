@@ -17,6 +17,7 @@ The following are the technologies which are used to implement this solution
 - TypeScript v4
 - Babel v7
 - Parcel v1
+- Eslint v7
 - FireBase: Firestore Database
 - Sass
 
