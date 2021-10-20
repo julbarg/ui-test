@@ -1,6 +1,7 @@
-import { FunctionComponent, useEffect, useState } from 'react'
+import { FunctionComponent, useContext, useEffect, useState } from 'react'
 import { Poll } from '../../../../types/types'
 import { roundAndFixed } from '../../../../util/NumberUtil'
+import { TypeContext } from '../../PreviousRulings'
 import CardActions from './CardAction'
 import CardGaugeCard from './CardGaugeBar'
 
@@ -8,6 +9,26 @@ const Card: FunctionComponent<{ poll: Poll }> = ({ poll }) => {
   const [positive, setPositive] = useState(0)
   const [negative, setNegative] = useState(0)
   const [enhancedDescription, setEnhancedDescription] = useState('')
+  const [enhancedName, setEnhancedName] = useState('')
+  const [enhancedPicture, setEnhancedPicture] = useState('')
+  const [enhancedRectangle, setEnhancedRectangle] = useState('')
+  const [classNameInit, setClassNameInit] = useState('')
+  const [lengthName, setLengthName] = useState(0)
+  const typeView = useContext(TypeContext)
+
+  useEffect(() => {
+    if (typeView === 'grid') {
+      setClassNameInit('card-grid')
+      setLengthName(15)
+      setEnhancedPicture(`${poll.picture}-large.png`)
+      setEnhancedRectangle('rectangle-large.png')
+    } else {
+      setClassNameInit('card')
+      setLengthName(25)
+      setEnhancedPicture(`${poll.picture}.png`)
+      setEnhancedRectangle('rectangle.png')
+    }
+  }, [typeView])
 
   useEffect(() => {
     calculatePercentages()
@@ -21,6 +42,15 @@ const Card: FunctionComponent<{ poll: Poll }> = ({ poll }) => {
 
     setEnhancedDescription(truncateDescription)
   }, [poll.description])
+
+  useEffect(() => {
+    const truncateName =
+      poll.name && poll.name.length <= lengthName
+        ? poll.name
+        : poll.name?.substr(0, lengthName) + '\u2026'
+
+    setEnhancedName(truncateName)
+  }, [poll.name, lengthName])
 
   const calculatePercentages = () => {
     const { votes } = poll
@@ -39,11 +69,15 @@ const Card: FunctionComponent<{ poll: Poll }> = ({ poll }) => {
     return (
       <>
         <img
-          src={`./assets/img/${poll.picture}`}
+          src={`./assets/img/${enhancedPicture}`}
           alt=""
-          className="card__image"
+          className={`${classNameInit}__image`}
         />
-        <img src={`./assets/img/rectangle.png`} alt="" className="card__bg" />
+        <img
+          src={`./assets/img/${enhancedRectangle}`}
+          alt=""
+          className={`${classNameInit}__bg`}
+        />
       </>
     )
   }
@@ -54,7 +88,10 @@ const Card: FunctionComponent<{ poll: Poll }> = ({ poll }) => {
 
   const renderThumsDown = () => {
     return (
-      <div className="card__icon-result yellow" aria-label="thumbs down">
+      <div
+        className={`${classNameInit}__icon-result yellow`}
+        aria-label="thumbs down"
+      >
         <img src="./assets/img/thumbs-down.svg" alt="thumbs down" />
       </div>
     )
@@ -62,7 +99,10 @@ const Card: FunctionComponent<{ poll: Poll }> = ({ poll }) => {
 
   const renderThumsUp = () => {
     return (
-      <div className="card__icon-result green" aria-label="thumbs up">
+      <div
+        className={`${classNameInit}__icon-result green`}
+        aria-label="thumbs up"
+      >
         <img src="./assets/img/thumbs-up.svg" alt="thumbs up" />
       </div>
     )
@@ -70,15 +110,15 @@ const Card: FunctionComponent<{ poll: Poll }> = ({ poll }) => {
 
   const renderTitle = () => {
     return (
-      <div className="card__title">
-        <h3>{poll.name}</h3>
+      <div className={`${classNameInit}__title`}>
+        <h3>{enhancedName}</h3>
         <p>{enhancedDescription}</p>
       </div>
     )
   }
 
   return (
-    <div className="card">
+    <div className={`${classNameInit}`}>
       {renderBackground()}
       {renderThumb()}
       {renderTitle()}
